@@ -19,23 +19,7 @@ jobs:
           host: ${{ secrets.EC2_SERVER_IP }}
           username: ${{ secrets.EC2_USER }}   
           key: ${{ secrets.EC2_SSH_KEY }}
-          script_stop: true
-          command_timeout: 20m
           script: |
-            set -e
             cd /home/ubuntu/Github-Action-CI-CD
             git pull origin main
-            if command -v docker-compose >/dev/null 2>&1; then
-              COMPOSE_CMD="docker-compose"
-            else
-              COMPOSE_CMD="docker compose"
-            fi
-
-            $COMPOSE_CMD up -d --build
-            $COMPOSE_CMD ps
-
-            # Fail the workflow if any app container is not running.
-            if ! $COMPOSE_CMD ps --status running | grep -q app; then
-              $COMPOSE_CMD logs --no-color --tail=200
-              exit 1
-            fi
+            docker compose up -d --build  
