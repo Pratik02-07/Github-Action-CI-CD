@@ -22,4 +22,8 @@ jobs:
           script: |
             cd /home/ubuntu/Github-Action-CI-CD
             git pull origin main
-            docker-compose up -d --build  
+            if command -v docker-compose >/dev/null 2>&1; then
+              docker-compose up -d --build
+            else
+              docker compose up -d --build
+            fi
