@@ -4,6 +4,7 @@ name: deploy node js application on Ec2 instance
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -19,7 +20,14 @@ jobs:
           host: ${{ secrets.EC2_SERVER_IP }}
           username: ${{ secrets.EC2_USER }}   
           key: ${{ secrets.EC2_SSH_KEY }}
+          script_stop: true
+          command_timeout: 10m
           script: |
-            cd /home/ubuntu/Github-Action-CI-CD
-            git pull origin main
+            set -e
+            cd /home/${{ secrets.EC2_USER }}/Github-Action-CI-CD
+            git fetch origin main
+            git checkout main
+            git reset --hard origin/main
             sudo docker compose up -d --build  
+            sudo docker compose ps
+            curl --fail --silent --show-error http://localhost:8080 > /dev/null
