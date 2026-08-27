@@ -27,7 +27,7 @@ This project demonstrates a simple end-to-end CI/CD pipeline that deploys a Dock
 4. On EC2, it pulls latest code and runs:
 	- `sudo docker compose up -d --build`
 5. Docker rebuilds and restarts the app container.
-6. App is available on port `8080`.
+6. The HTML page is available on port `8080`.
 
 ## Architecture Diagram
 
@@ -78,9 +78,13 @@ Run container:
 
 `docker run --rm -p 8080:8080 "name"`
 
-Test API:
+Test the HTML page:
 
 `curl http://localhost:8080`
+
+Test the API:
+
+`curl http://localhost:8080/api`
 
 ### Run with Docker Compose
 
@@ -162,13 +166,13 @@ GitHub Repository -> Settings -> Secrets and variables -> Actions -> New reposit
 
 ## Verify Deployment
 
-After workflow success, test:
+After workflow success, open the HTML page in a browser:
 
-`curl http://<EC2_PUBLIC_IP>:8080`
+`http://<EC2_PUBLIC_IP>:8080`
 
-Expected response example:
+The API response is available at:
 
-`{"message":"Hello from the server v2:latest deployed!"}`
+`http://<EC2_PUBLIC_IP>:8080/api`
 
 ## Troubleshooting
 
